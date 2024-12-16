@@ -20,4 +20,35 @@ public class EmailHistoryEntity {
     private String email;
     private LocalDateTime createdData;
 
+    public LocalDateTime getCreatedData() {
+        return createdData;
+    }
+
+    public void setCreatedData(LocalDateTime createdData) {
+        this.createdData = createdData;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }
