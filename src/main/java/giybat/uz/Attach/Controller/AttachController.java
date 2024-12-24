@@ -1,14 +1,12 @@
 package giybat.uz.Attach.Controller;
 
 import giybat.uz.Attach.dto.AttachDTO;
-import giybat.uz.Attach.dto.DovnloadDTO;
 import giybat.uz.Attach.entity.AttachEntity;
 import giybat.uz.Attach.service.AttachService;
 import giybat.uz.ExceptionHandler.AppBadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -38,15 +36,6 @@ public class AttachController {
         Page<AttachEntity> attachEntities = attachService.allAttaches(page - 1, size);
         return ResponseEntity.ok().body(attachEntities);
     }
-
-//    @GetMapping("/download/{fileName}")
-//    public ResponseEntity<Resource> download(@PathVariable("fileName") String fileName) {
-//        DovnloadDTO download = attachService.download(fileName);
-//        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-//                "attachment; filename=\"" + download.getName() + "\"").body(download.getResource());
-//    }
-
-
     @ExceptionHandler({AppBadException.class, IllegalArgumentException.class})
     public ResponseEntity<?> handle(AppBadException e) {
         return ResponseEntity.badRequest().body(e.getMessage());

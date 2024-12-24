@@ -23,7 +23,6 @@ public class EmailSendingService {
         msg.setSubject(subject);
         msg.setText(text);
         javaMailSender.send(msg);
-
         return "Mail was send";
     }
     public String sendMimeMessage(String to, String subject, String text) {

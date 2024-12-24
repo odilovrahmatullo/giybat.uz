@@ -1,5 +1,5 @@
 package giybat.uz.profile.enums;
 
 public enum ProfileRole {
-    USER,ADMIN,MODERATOR,PUBLISHER
+    ROLE_USER, ROLE_ADMIN,ROLE_MODERATOR,ROLE_PUBLISHER
 }
