@@ -1,0 +1,10 @@
+### AUHT
+POST localhost:8080/api/auth/registration
+Content-Type: application/json
+
+{
+  "name": "Mexriddin",
+  "surname": "Zaxriddinov",
+  "username": "+998940091704",
+  "password": "123456"
+}
