@@ -72,8 +72,8 @@ public class AuthService {
                 sb.append("<h1 style=\"text-align: center\"> Complete Registration</h1>");
                 sb.append("<br>");
                 sb.append("<p>Click the link below to complete registration</p>\n");
-                sb.append("<p><a style=\"padding: 5px; background-color: indianred; color: white\"  href=\"http://localhost:8080/api/auth/registration/confirm/")
-                        .append(profileEmail.getId()).append("\" target=\"_blank\">Click Th</a></p>\n");
+                sb.append("<p><a style=\"padding: 5px; background-color: indianred; color: white\"  href=http://localhost:8080/api/auth/registration/confirm/")
+                        .append(profileEmail.getId()).append(" target=_blank >Click Th</a></p>\n");
 
                 emailSendingService.sendSimpleMessage(dto.getUsername(), "Complite Registration", sb.toString());
                 emailSendingService.sendMimeMessage(dto.getUsername(), "Tasdiqlash", sb.toString());
@@ -91,7 +91,7 @@ public class AuthService {
         entity.setUsername(dto.getUsername());
         entity.setPassword(MD5Util.md5(dto.getPassword()));
         entity.setSurname(dto.getSurname());
-        entity.setRole(ProfileRole.USER);
+        entity.setRole(ProfileRole.ROLE_USER);
         entity.setStatus(ProfileStatus.IN_REGISTRATION);
         entity.setVisible(Boolean.TRUE);
         entity.setCreated_date(LocalDateTime.now());
@@ -131,27 +131,6 @@ public class AuthService {
             throw new AppBadException("The phone number could not be found or it has already been registered");
         }
     }
-
-//    public ProfileDTO login(AuthDTO dto) {
-//        Optional<ProfileEntity> optional = profileRepository.findByUsernameAndVisibleTrue(dto.getUsername());
-//        if (optional.isEmpty()) {
-//            throw new AppBadException("Email or Password wrong");
-//        }
-//        ProfileEntity entity = optional.get();
-//        if (!entity.getPassword().equals(MD5Util.md5(dto.getPassword()))) {
-//            throw new AppBadException("Email or Password wrong");
-//        }
-//        if (!entity.getStatus().equals(ProfileStatus.ACTIVE)) {
-//            throw new AppBadException("User Not Active");
-//        }
-//        ProfileDTO profileDTO = new ProfileDTO();
-//        profileDTO.setName(entity.getName());
-//        profileDTO.setSurname(entity.getSurname());
-//        profileDTO.setUsername(entity.getUsername());
-//        profileDTO.setRole(entity.getRole());
-//        profileDTO.setJwtToken(JwtUtil.encode(entity.getUsername(), entity.getRole().toString()));
-//        return profileDTO;
-//    }
 
     public ProfileDTO login(AuthDTO dto) {
         try {

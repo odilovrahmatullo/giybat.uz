@@ -27,7 +27,7 @@ public class ProfileController {
                                                  @RequestHeader("Authorization") String token) {
         System.out.println(token);
         JwtDTO dto = JwtUtil.decode(token.substring(7));
-        if (dto.getRole().equals(ProfileRole.ADMIN)) {
+        if (dto.getRole().equals(ProfileRole.ROLE_ADMIN)) {
             return ResponseEntity.status(201).body(service.createProfile(requestDTO));
         } else {
             return ResponseEntity.status(403).build();
@@ -40,7 +40,7 @@ public class ProfileController {
                                            @RequestParam(value = "size", defaultValue = "10") int size,
                                            @RequestHeader("Authorization") String token) {
         JwtDTO dto = JwtUtil.decode(token.substring(7));
-        if (dto.getRole().equals(ProfileRole.ADMIN)) {
+        if (dto.getRole().equals(ProfileRole.ROLE_ADMIN)) {
             return ResponseEntity.ok(service.profileAll(page - 1, size));
         } else {
             return ResponseEntity.status(403).build();
@@ -52,7 +52,7 @@ public class ProfileController {
     public ResponseEntity<?> deleteProfile(@PathVariable("id") Integer id,
                                            @RequestHeader("Authorization") String token) {
         JwtDTO dto = JwtUtil.decode(token.substring(7));
-        if (dto.getRole().equals(ProfileRole.ADMIN)) {
+        if (dto.getRole().equals(ProfileRole.ROLE_ADMIN)) {
             return ResponseEntity.ok().body(service.deleted(id));
         } else {
             return ResponseEntity.status(403).build();

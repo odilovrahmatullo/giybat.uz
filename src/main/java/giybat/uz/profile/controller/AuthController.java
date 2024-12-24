@@ -23,28 +23,29 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/registration")
-    public ResponseEntity<String> registration(@Valid @RequestBody RegistrationDTO dto){
+    public ResponseEntity<String> registration(@Valid @RequestBody RegistrationDTO dto) {
         return ResponseEntity.ok(authService.registration(dto));
     }
 
     @GetMapping("/registration/confirm/{id}")
-    public ResponseEntity<String> registration(@PathVariable Integer id){
+    public ResponseEntity<String> registration(@PathVariable Integer id) {
         return ResponseEntity.ok(authService.registrationConfirm(id));
     }
 
     @PostMapping("/registration/confirm/code")
-    public ResponseEntity<?> registrationConfirmCode(@Valid @RequestBody SmsConfirmDTO dto){
-
+    public ResponseEntity<?> registrationConfirmCode(@Valid @RequestBody SmsConfirmDTO dto) {
         String s = authService.smsConfirm(dto, LocalDateTime.now());
         return ResponseEntity.ok().body(s);
     }
+
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody AuthDTO dto){
+    public ResponseEntity<?> login(@Valid @RequestBody AuthDTO dto) {
         ProfileDTO login = authService.login(dto);
         return ResponseEntity.ok().body(login);
     }
+
     @ExceptionHandler({AppBadException.class, IllegalArgumentException.class})
-    public ResponseEntity<?> handle(AppBadException e){
+    public ResponseEntity<?> handle(AppBadException e) {
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 }
