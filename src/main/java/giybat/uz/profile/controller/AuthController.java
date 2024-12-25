@@ -1,8 +1,8 @@
 package giybat.uz.profile.controller;
 
 
-import giybat.uz.ExceptionHandler.AppBadException;
-import giybat.uz.UsernameHistory.dto.SmsConfirmDTO;
+import giybat.uz.exceptionHandler.AppBadException;
+import giybat.uz.usernameHistory.dto.SmsConfirmDTO;
 import giybat.uz.profile.dto.AuthDTO;
 import giybat.uz.profile.dto.ProfileDTO;
 import giybat.uz.profile.dto.RegistrationDTO;
@@ -41,7 +41,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody AuthDTO dto) {
         ProfileDTO login = authService.login(dto);
-        return ResponseEntity.ok().body(login);
+        return ResponseEntity.ok(login);
     }
 
     @ExceptionHandler({AppBadException.class, IllegalArgumentException.class})

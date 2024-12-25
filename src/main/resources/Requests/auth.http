@@ -9,7 +9,7 @@ Content-Type: application/json
   "password": "123456"
 }
 ### LOGIN
-POST localhost:8080/api/auth/login
+POST localhost:8080/api/auth/login  eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwic3ViIjoiemF4cmlkZGlub3YxNzA3QGdtYWlsLmNvbSIsImlhdCI6MTczNTEzOTIwMiwiZXhwIjoxNzM1MjI1NjAyfQ.hecPuSxhNHeB0xbFXsVxLLMqqbdGFL1jcAh8sbqLxew
 Content-Type: application/json
 
 {
