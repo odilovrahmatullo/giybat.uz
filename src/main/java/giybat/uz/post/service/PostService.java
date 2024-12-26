@@ -1,21 +1,24 @@
 package giybat.uz.post.service;
 
-import giybat.uz.attach.dto.AttachDTO;
-import giybat.uz.attach.dto.GetAttachDTO;
 import giybat.uz.attach.service.AttachService;
 import giybat.uz.exceptionHandler.AppBadException;
-import giybat.uz.post.dto.CreatePostDTO;
-import giybat.uz.post.dto.PostDTO;
+import giybat.uz.post.dto.*;
 import giybat.uz.post.entity.PostEntity;
+import giybat.uz.post.repository.CustomRepository;
 import giybat.uz.post.repository.PostRepository;
+import giybat.uz.profile.dto.ProfileShortInfo;
 import giybat.uz.profile.enums.ProfileRole;
 import giybat.uz.profile.service.ProfileService;
-import giybat.uz.securityConfig.config.CustomUserDetails;
 import giybat.uz.util.SpringSecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,6 +29,8 @@ public class PostService {
     private AttachService attachService;
     @Autowired
     private ProfileService profileService;
+    @Autowired
+    private CustomRepository customRepository;
 
     public PostDTO AddedPost(CreatePostDTO dto) {
         PostEntity postEntity = new PostEntity();
@@ -73,6 +78,33 @@ public class PostService {
             }else throw new AppBadException("User is not authorized to delete this post");
         } else throw new AppBadException("Id not found");
     }
+
+
+    public PostInfoDTO getPostId(Integer id) {
+        Optional<PostEntity> byIdAndVisibleTrue = postRepository.findByIdAndVisibleTrue(id);
+        if (byIdAndVisibleTrue.isPresent()) {
+            return toDTOInfo(byIdAndVisibleTrue.get());
+        } else throw new AppBadException("Id not found");
+    }
+
+    public Page<PostInfoDTO> filter(FilterDTO filter, int page, int size) {
+        FilterResultDTO<PostEntity> result = customRepository.filter(filter, page, size);
+        List<PostInfoDTO> dtoList = new LinkedList<>();
+        for (PostEntity entity : result.getContent()) {
+            dtoList.add(this.toDTOInfo(entity));
+        }
+        return new PageImpl<>(dtoList, PageRequest.of(page, size), result.getTotal());
+    }
+    private PostInfoDTO toDTOInfo(PostEntity postEntity) {
+        PostInfoDTO postDTO = new PostInfoDTO();
+        postDTO.setId(postEntity.getId());
+        postDTO.setCreatedDate(postEntity.getCreatedDate());
+        postDTO.setContent(postEntity.getContent());
+        postDTO.setPhoto(attachService.getUrl(postEntity.getPhotoId()));
+        postDTO.setUser(new ProfileShortInfo(postEntity.getUser().getName(),postEntity.getUser().getPhotoId()));
+        return postDTO;
+    }
+
 
 
 }

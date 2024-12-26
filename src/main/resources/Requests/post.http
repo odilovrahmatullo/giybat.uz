@@ -9,4 +9,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwic3ViIjoie
 }
 
 ### GET
+GET localhost:8080/api/post/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwic3ViIjoiemF4cmlkZGlub3YxNzA3QGdtYWlsLmNvbSIsImlhdCI6MTczNTEzOTIwMiwiZXhwIjoxNzM1MjI1NjAyfQ.hecPuSxhNHeB0xbFXsVxLLMqqbdGFL1jcAh8sbqLxew
+
+### Filter
+POST localhost:8080/api/post/filter?page=1&size=10
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwic3ViIjoiemF4cmlkZGlub3YxNzA3QGdtYWlsLmNvbSIsImlhdCI6MTczNTEzOTIwMiwiZXhwIjoxNzM1MjI1NjAyfQ.hecPuSxhNHeB0xbFXsVxLLMqqbdGFL1jcAh8sbqLxew
+
+{
+  "name": "Mexriddin"
+}
 
