@@ -1,16 +1,16 @@
 package giybat.uz.profile.service;
 
 
-import giybat.uz.Attach.entity.AttachEntity;
-import giybat.uz.ExceptionHandler.AppBadException;
-import giybat.uz.SecurityConfig.config.CustomUserDetails;
-import giybat.uz.UsernameHistory.dto.SmsConfirmDTO;
-import giybat.uz.UsernameHistory.entiy.SmsHistoryEntity;
-import giybat.uz.UsernameHistory.repository.SmsHistoryRepository;
-import giybat.uz.UsernameHistory.service.EmailHistoryService;
-import giybat.uz.UsernameHistory.service.EmailSendingService;
-import giybat.uz.UsernameHistory.service.SmsHistoryService;
-import giybat.uz.UsernameHistory.service.SmsService;
+import giybat.uz.attach.entity.AttachEntity;
+import giybat.uz.exceptionHandler.AppBadException;
+import giybat.uz.securityConfig.config.CustomUserDetails;
+import giybat.uz.usernameHistory.dto.SmsConfirmDTO;
+import giybat.uz.usernameHistory.entiy.SmsHistoryEntity;
+import giybat.uz.usernameHistory.repository.SmsHistoryRepository;
+import giybat.uz.usernameHistory.service.EmailHistoryService;
+import giybat.uz.usernameHistory.service.EmailSendingService;
+import giybat.uz.usernameHistory.service.SmsHistoryService;
+import giybat.uz.usernameHistory.service.SmsService;
 import giybat.uz.profile.dto.AuthDTO;
 import giybat.uz.profile.dto.ProfileDTO;
 import giybat.uz.profile.dto.RegistrationDTO;
@@ -133,34 +133,27 @@ public class AuthService {
     }
 
     public ProfileDTO login(AuthDTO dto) {
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword())
-            );
-
-            if (authentication.isAuthenticated()) {
-                CustomUserDetails profile = (CustomUserDetails) authentication.getPrincipal();
-
-                ProfileDTO profileDTO = new ProfileDTO();
-                profileDTO.setName(profile.getName());
-                profileDTO.setSurname(profile.getSurname());
-                profileDTO.setUsername(profile.getEmail());
-                profileDTO.setRole(profile.getRole());
-                AttachEntity attachEntity = new AttachEntity();
-
-
-                String accessToken = JwtUtil.encode(profile.getEmail(), profile.getRole().toString());
-                String refreshToken = JwtUtil.generateRefreshToken(profile.getEmail());
-                profileDTO.setJwtToken(accessToken);
-                profileDTO.setRefreshToken(refreshToken);
-
-
-                return profileDTO;
-            }
-        } catch (BadCredentialsException e) {
-            throw new UsernameNotFoundException("Phone or password wrong");
+        Optional<ProfileEntity> optional = profileRepository.findByUsernameAndVisibleTrue(dto.getUsername());
+        if (optional.isEmpty()) {
+            throw new AppBadException("Email or Password wrong");
         }
-        throw new UsernameNotFoundException("Phone or password wrong");
+        ProfileEntity entity = optional.get();
+        if (!entity.getPassword().equals(MD5Util.md5(dto.getPassword()))) {
+            throw new AppBadException("Email or Password wrong");
+        }
+        if (!entity.getStatus().equals(ProfileStatus.ACTIVE)) {
+            throw new AppBadException("User Not Active");
+        }
+        ProfileDTO profileDTO = new ProfileDTO();
+        profileDTO.setName(entity.getName());
+        profileDTO.setSurname(entity.getSurname());
+        profileDTO.setUsername(entity.getUsername());
+        profileDTO.setRole(entity.getRole());
+        String accessToken = JwtUtil.encode(entity.getUsername(), entity.getRole().toString());
+        String refreshToken = JwtUtil.generateRefreshToken(entity.getUsername());
+        profileDTO.setJwtToken(accessToken);
+        profileDTO.setRefreshToken(refreshToken);
+        return profileDTO;
     }
 
 

@@ -2,7 +2,7 @@ package giybat.uz.profile.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import giybat.uz.Attach.entity.AttachEntity;
+import giybat.uz.attach.entity.AttachEntity;
 import giybat.uz.profile.entity.ProfileEntity;
 import giybat.uz.profile.enums.ProfileRole;
 import giybat.uz.profile.enums.ProfileStatus;

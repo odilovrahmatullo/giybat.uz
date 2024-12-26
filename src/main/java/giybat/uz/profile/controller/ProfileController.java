@@ -1,7 +1,7 @@
 package giybat.uz.profile.controller;
 
 
-import giybat.uz.ExceptionHandler.AppBadException;
+import giybat.uz.exceptionHandler.AppBadException;
 import giybat.uz.profile.dto.JwtDTO;
 import giybat.uz.profile.dto.ProfileDTO;
 import giybat.uz.profile.dto.UpdateProfileDetailDTO;

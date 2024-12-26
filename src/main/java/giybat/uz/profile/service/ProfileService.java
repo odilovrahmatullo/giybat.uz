@@ -1,10 +1,10 @@
 package giybat.uz.profile.service;
 
 
-import giybat.uz.ExceptionHandler.AppBadException;
-import giybat.uz.UsernameHistory.repository.SmsHistoryRepository;
-import giybat.uz.UsernameHistory.service.SmsHistoryService;
-import giybat.uz.UsernameHistory.service.SmsService;
+import giybat.uz.exceptionHandler.AppBadException;
+import giybat.uz.usernameHistory.repository.SmsHistoryRepository;
+import giybat.uz.usernameHistory.service.SmsHistoryService;
+import giybat.uz.usernameHistory.service.SmsService;
 import giybat.uz.profile.dto.ProfileDTO;
 import giybat.uz.profile.dto.UpdateProfileDetailDTO;
 import giybat.uz.profile.entity.ProfileEntity;

@@ -1,6 +1,6 @@
 package giybat.uz.util;
 
-import giybat.uz.SecurityConfig.config.CustomUserDetails;
+import giybat.uz.securityConfig.config.CustomUserDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 

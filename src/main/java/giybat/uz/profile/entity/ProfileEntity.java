@@ -2,7 +2,7 @@ package giybat.uz.profile.entity;
 
 
 
-import giybat.uz.Attach.entity.AttachEntity;
+import giybat.uz.attach.entity.AttachEntity;
 import giybat.uz.profile.dto.ProfileDTO;
 import giybat.uz.profile.enums.ProfileRole;
 import giybat.uz.profile.enums.ProfileStatus;
