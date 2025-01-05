@@ -30,6 +30,27 @@ public class SpringSecurityConfig {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    public static final String[] AUTH_WHITELIST = {
+            "/api/auth/login",
+            "video/view-count/*",
+            "video/title/*",
+            "video/byCategory/*",
+            "video/tag/*",
+            "/video-tag/**",
+            "/v2/api-docs",
+            "/v3/api-docs",
+            "/v3/api-docs/**",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui/**",
+            "/webjars/**",
+            "/swagger-ui.html",
+            "/api/auth/login","/api/auth/registration","/registration/confirm/*","video/view-count/*","video/title/*","video/byCategory/*","video/tag/*","/video-tag/**",
+            "video/channel/**","attach/**","/api/playlist/**","/api/email/confirm/**"
+    };
+
     @Bean
     public AuthenticationProvider authenticationProvider() {
         final DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
@@ -43,16 +64,12 @@ public class SpringSecurityConfig {
 
         http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
             authorizationManagerRequestMatcherRegistry
-                    .requestMatchers("/api/auth/**").permitAll()
-                    .requestMatchers("/api/auth/login").permitAll()
-                    .requestMatchers("/api/attach/**").permitAll()
+                    .requestMatchers(AUTH_WHITELIST).permitAll()
                     .anyRequest()
                     .authenticated();
         }).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
         http.csrf(AbstractHttpConfigurer::disable);
 //        http.cors(Customizer.withDefaults());
-
         http.cors(httpSecurityCorsConfigurer -> {
             CorsConfiguration configuration = new CorsConfiguration();
             configuration.setAllowedOriginPatterns(Arrays.asList("*"));
