@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -87,6 +88,7 @@ public class PostService {
         } else throw new AppBadException("Id not found");
     }
 
+
     public Page<PostInfoDTO> filter(FilterDTO filter, int page, int size) {
         FilterResultDTO<PostEntity> result = customRepository.filter(filter, page, size);
         List<PostInfoDTO> dtoList = new LinkedList<>();
@@ -95,6 +97,19 @@ public class PostService {
         }
         return new PageImpl<>(dtoList, PageRequest.of(page, size), result.getTotal());
     }
+    public Page<PostInfoDTO> postAll(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("createdDate").descending());
+        Page<PostEntity> entityList = postRepository.getAll(pageRequest);
+        Long total = entityList.getTotalElements();
+        List<PostInfoDTO> dtoList = new LinkedList<>();
+        for (PostEntity entity : entityList) {
+            dtoList.add(toDTOInfo(entity));
+        }
+        PageImpl page1 = new PageImpl<>(dtoList, pageRequest, total);
+
+        return page1;
+    }
+
     private PostInfoDTO toDTOInfo(PostEntity postEntity) {
         PostInfoDTO postDTO = new PostInfoDTO();
         postDTO.setId(postEntity.getId());
