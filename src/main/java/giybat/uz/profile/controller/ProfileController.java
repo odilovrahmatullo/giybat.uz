@@ -7,6 +7,7 @@ import giybat.uz.profile.dto.ProfileDTO;
 import giybat.uz.profile.dto.UpdateProfileDetailDTO;
 import giybat.uz.profile.enums.ProfileRole;
 import giybat.uz.profile.service.ProfileService;
+import giybat.uz.util.ApiResponse;
 import giybat.uz.util.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,13 +28,16 @@ public class ProfileController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/")
     @Operation(summary = "Admin add user", description = "Add user via ADMIN")
-    public ResponseEntity<ProfileDTO> addProfile(@RequestBody @Valid ProfileDTO requestDTO,
-                                                 @RequestHeader("Authorization") String token) {
+    public ResponseEntity<?> addProfile(@RequestBody @Valid ProfileDTO requestDTO,
+                                        @RequestHeader("Authorization") String token) {
+
         JwtDTO dto = JwtUtil.decode(token.substring(7));
         if (dto.getRole().equals(ProfileRole.ROLE_ADMIN)) {
-            return ResponseEntity.status(201).body(service.createProfile(requestDTO));
+            ApiResponse<?> response = new ApiResponse<>(201, "success", service.createProfile(requestDTO));
+            return ResponseEntity.status(201).body(response);
         } else {
-            return ResponseEntity.status(403).build();
+            ApiResponse<?> response = new ApiResponse<>(403, "error", null);
+            return ResponseEntity.status(403).body(response);
         }
     }
 
@@ -45,9 +49,11 @@ public class ProfileController {
                                            @RequestHeader("Authorization") String token) {
         JwtDTO dto = JwtUtil.decode(token.substring(7));
         if (dto.getRole().equals(ProfileRole.ROLE_ADMIN)) {
-            return ResponseEntity.ok(service.profileAll(page - 1, size));
+            ApiResponse<?> response = new ApiResponse<>(200, "success", service.profileAll(page - 1, size));
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.status(403).build();
+            ApiResponse<?> response = new ApiResponse<>(403, "error", null);
+            return ResponseEntity.status(403).body(response);
         }
     }
 
@@ -63,15 +69,18 @@ public class ProfileController {
             return ResponseEntity.status(403).build();
         }
     }
+
     @Operation(summary = "Update", description = "Update username and surname pictures")
     @PutMapping("/detail")
-    public ResponseEntity<Boolean> updateDetail(@RequestBody @Valid UpdateProfileDetailDTO requestDTO) {
-        return ResponseEntity.ok().body(service.updateDetail(requestDTO));
+    public ResponseEntity<?> updateDetail(@RequestBody @Valid UpdateProfileDetailDTO requestDTO) {
+        ApiResponse<?> response = new ApiResponse<>(200, "success", service.updateDetail(requestDTO));
+        return ResponseEntity.ok().body(response);
     }
 
 
     @ExceptionHandler(AppBadException.class)
     public ResponseEntity<?> handle(AppBadException e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
+        ApiResponse<?> response = new ApiResponse<>(400, e.getMessage(), null);
+        return ResponseEntity.badRequest().body(response);
     }
 }
